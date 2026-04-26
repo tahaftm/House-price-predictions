@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 import pandas as pd
 import os
+from src.logger import logging
+from src.components.data_transformation import DataTransformation
 
 @dataclass
 class DataIngestionConfig:
@@ -31,12 +33,20 @@ class DataIngestion:
         train_df.drop(outlier_rows.index, axis = 0,inplace=True)
 
         train_df = train_df.dropna(subset=['MasVnrArea', 'Electrical', 'BsmtExposure'])
+        test_df = test_df.dropna(subset=['MasVnrArea', 'Electrical', 'BsmtExposure'])
+
+        train_df.drop(["Id","MoSold"],axis = 1,inplace = True)
+        test_df.drop(["Id","MoSold"],axis = 1,inplace = True)
 
         train_df.to_csv(self.data_ingestion_config.training_data_path)
         test_df.to_csv(self.data_ingestion_config.testing_data_path)
+
+        logging.info("Train and test data loaded")
 
         return train_df,test_df
 
 if __name__ == '__main__':
     data_ingestion = DataIngestion()
     train_df, test_df = data_ingestion.initiate_data_ingestion()
+    data_transformation = DataTransformation()
+    preprocessed_train_df,preprocessed_test_df, preprocessor_path = data_transformation.initiate_data_transformation(train_df, test_df)
