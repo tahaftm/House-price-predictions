@@ -38,8 +38,8 @@ class DataIngestion:
         train_df.drop(["Id","MoSold"],axis = 1,inplace = True)
         test_df.drop(["Id","MoSold"],axis = 1,inplace = True)
 
-        train_df.to_csv(self.data_ingestion_config.training_data_path)
-        test_df.to_csv(self.data_ingestion_config.testing_data_path)
+        train_df.to_csv(self.data_ingestion_config.training_data_path,index = False, header = True)
+        test_df.to_csv(self.data_ingestion_config.testing_data_path,index = False, header = True)
 
         logging.info("Train and test data loaded")
 
