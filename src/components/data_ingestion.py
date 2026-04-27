@@ -47,14 +47,14 @@ class DataIngestion:
 
             logging.info("Data loaded")
 
-            return train_df
+            return train_df,test_df
         except Exception as e:
             raise CustomException(e,sys)
 
 if __name__ == '__main__':
     data_ingestion = DataIngestion()
     train_df, test_df = data_ingestion.initiate_data_ingestion()
-    # data_transformation = DataTransformation()
-    # preprocessed_train_df,preprocessed_test_df, preprocessor_path = data_transformation.initiate_data_transformation(train_df, test_df)
-    # model_trainer = ModelTrainer()
-    # model_trainer.initiate_model_training(preprocessed_train_df,preprocessed_test_df)
+    data_transformation = DataTransformation()
+    preprocessed_train_df,preprocessed_test_df, preprocessor_path = data_transformation.initiate_data_transformation(train_df, test_df)
+    model_trainer = ModelTrainer()
+    model_trainer.initiate_model_training(preprocessed_train_df,preprocessed_test_df)
